@@ -1,0 +1,26 @@
+<div class="mx-auto max-w-2xl px-2">
+  <add-todo></add-todo>
+
+  <div class="mt-4 flex items-center justify-end space-x-2">
+    <input
+      type="checkbox"
+      name="hide-item"
+      id="hide-item"
+      [(ngModel)]="isTasksHidden"
+      (change)="hideCompletedTask()"
+    />
+    <label for="hide-item">Hide completed task</label>
+  </div>
+
+  <ul
+    class="mt-6 flex list-none flex-col divide-y divide-solid divide-blue-200"
+  >
+    @for (todo of todos; track todo.id) {
+      <todo-item
+        [todo]="todo"
+        (delete)="onDeleteTodo($event)"
+        (update)="onUpdateTodo(todo.id, $event)"
+      ></todo-item>
+    }
+  </ul>
+</div>
