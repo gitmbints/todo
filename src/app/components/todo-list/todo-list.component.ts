@@ -4,11 +4,17 @@ import { TodoService } from '../../services/todo.service';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { FormsModule } from '@angular/forms';
+import { FilterCompletedPipe } from '../../Pipes/filter-completed.pipe';
 
 @Component({
   selector: 'todo-list',
   standalone: true,
-  imports: [AddTodoComponent, TodoItemComponent, FormsModule],
+  imports: [
+    AddTodoComponent,
+    TodoItemComponent,
+    FormsModule,
+    FilterCompletedPipe,
+  ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.css',
 })
@@ -30,13 +36,5 @@ export class TodoListComponent implements OnInit {
   onUpdateTodo(id: string, updates: Partial<Todo>): void {
     this.todoService.updateTodo(id, updates);
     this.todos = this.todoService.getTodos();
-  }
-
-  hideCompletedTask() {
-    if (this.isTasksHidden) {
-      this.todos = this.todos.filter((todo) => todo.status !== 'completed');
-    } else {
-      this.todos = this.todoService.getTodos();
-    }
   }
 }
