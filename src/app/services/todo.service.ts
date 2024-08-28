@@ -8,6 +8,10 @@ import { v4 as uuidv4 } from 'uuid';
 export class TodoService {
   private todos: Todo[] = [];
 
+  constructor() {
+    this.loadTodosFromLocalStorage();
+  }
+
   getTodos(): Todo[] {
     return this.todos;
   }
@@ -22,16 +26,32 @@ export class TodoService {
       updatedAt: new Date(),
     };
     this.todos.push(newTodo);
+    this.saveTodosToLocalStorage();
   }
 
   updateTodo(id: string, updates: Partial<Todo>): void {
     const todo = this.todos.find((todo) => todo.id === id);
+
     if (todo) {
       Object.assign(todo, updates, { updatedAt: new Date() });
+      this.saveTodosToLocalStorage();
     }
   }
 
   deleteTodo(id: string): void {
     this.todos = this.todos.filter((todo) => todo.id !== id);
+    this.saveTodosToLocalStorage();
+  }
+
+  private saveTodosToLocalStorage(): void {
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+
+  private loadTodosFromLocalStorage(): void {
+    const todosJson = localStorage.getItem('todos');
+
+    if (todosJson) {
+      this.todos = JSON.parse(todosJson);
+    }
   }
 }
